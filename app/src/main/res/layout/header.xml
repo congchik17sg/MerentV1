@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:padding="0dp">
+
+    <!-- Background Image (header.png) filling the header -->
+    <ImageView
+        android:id="@+id/header_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/header" />
+
+    <!-- Image at the middle inside the header -->
+    <ImageView
+        android:id="@+id/center_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="top"
+        android:src="@drawable/merent"
+    android:scaleType="centerInside" />
+
+</FrameLayout>
