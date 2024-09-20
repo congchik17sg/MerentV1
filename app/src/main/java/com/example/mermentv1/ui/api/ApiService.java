@@ -23,7 +23,7 @@ public interface ApiService {
     // Registration request
     @Headers({"accept: */*", "Content-Type: application/json"})
     @POST("Authentication/Register")
-    Call<SignupResponse> registerUser(@Body SignupRequest registerRequest);
+    Call<SignupResponse> registerUser(@Body SignupRe    quest registerRequest);
 
 //    // Fetch all products
 //    @Headers("accept: */*")
