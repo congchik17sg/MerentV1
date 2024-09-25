@@ -3,6 +3,10 @@ package com.example.mermentv1.ui.api;
 import com.example.mermentv1.model.PaymentRequest;
 import com.example.mermentv1.model.PaymentResponse;
 import com.example.mermentv1.model.ProductResponse;
+import com.example.mermentv1.model.SigninRequest;
+import com.example.mermentv1.model.SigninResponse;
+import com.example.mermentv1.model.SignupRequest;
+import com.example.mermentv1.model.SignupResponse;
 import com.example.mermentv1.model.UserResponse;
 
 import retrofit2.Call;
@@ -23,7 +27,7 @@ public interface ApiService {
     // Registration request
     @Headers({"accept: */*", "Content-Type: application/json"})
     @POST("Authentication/Register")
-    Call<SignupResponse> registerUser(@Body SignupRe    quest registerRequest);
+    Call<SignupResponse> registerUser(@Body SignupRequest registerRequest);
 
 //    // Fetch all products
 //    @Headers("accept: */*")
