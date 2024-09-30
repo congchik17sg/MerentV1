@@ -11,15 +11,10 @@
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:padding="0dp">
+        android:padding="0dp"
+        >
 
         <!-- Background Image (header.png) filling the header -->
-        <ImageView
-            android:id="@+id/header_image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/header" />
 
         <!-- Image at the middle inside the header -->
         <ImageView
@@ -29,6 +24,7 @@
             android:layout_marginLeft="20dp"
             android:layout_gravity="top"
             android:src="@drawable/merent"
+
             android:scaleType="centerInside" />
 
     </FrameLayout>
@@ -44,12 +40,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/merent_color"
-            android:paddingTop="20dp" />
+            android:paddingTop="20dp"
+            android:theme="@style/ToolbarThemeWhite"/>
 
         <!-- CoordinatorLayout moved inside main content -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             >
 
             <!-- BottomAppBar with BottomNavigationView -->
@@ -62,6 +60,8 @@
                 app:fabCradleMargin="10dp"
                 app:fabCradleRoundedCornerRadius="30dp"
                 android:layout_gravity="bottom"
+
+
                 >
 
                 <!-- Bottom Navigation -->
@@ -69,21 +69,27 @@
                     android:id="@+id/bottom_navigation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:itemIconSize="30dp"
                     app:menu="@menu/bottom_menu"
+                    android:background="@drawable/bg_merent_corner_10"
+                    app:itemIconTint="@color/white"
+                    android:layout_marginBottom="20dp"
+                   android:layout_marginHorizontal="15dp"
+
 
                     />
 
             </com.google.android.material.bottomappbar.BottomAppBar>
 
             <!-- FloatingActionButton -->
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:src="@drawable/baseline_add_24"
-                android:layout_margin="16dp"
-                android:contentDescription="Add item" />
+
+
+            <ImageView
+                android:id="@+id/header_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/header" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

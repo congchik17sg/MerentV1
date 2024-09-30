@@ -8,7 +8,6 @@
     android:orientation="vertical"
     tools:context=".SigninActivity">
 
-
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
@@ -40,7 +39,6 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/rounded_edittext"
         android:ems="10"
-
         android:inputType="textEmailAddress"
         android:padding="12dp" />
 
@@ -81,22 +79,19 @@
         android:layout_height="30dp"
         android:layout_marginTop="5dp"
         android:layout_marginHorizontal="20dp"
-        android:background="@drawable/bg_blue_corner_10"
+        android:background="@drawable/bg_merent_corner_10"
         android:gravity="center"
         android:text="Đăng Nhập"
-        android:textSize="10sp"
-
-        />
+        android:textSize="10sp" />
 
     <TextView
-        android:layout_width="400dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:paddingLeft="25dp"
-        android:text="-----------------------------Hoặc đăng nhập với-----------------------------"
+        android:layout_gravity="center"
+        android:text="-------------------Hoặc đăng nhập với-------------------"
         android:textColor="@color/black"
         android:textSize="15dp" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -120,10 +115,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="110dp"
             android:layout_weight="1"
-            android:onClick="signup"
             android:text="Đăng Kí"
             android:textColor="@color/black" />
     </LinearLayout>
-
 
 </LinearLayout>

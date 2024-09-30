@@ -1,7 +1,9 @@
-package com.example.apitest.api;
+package com.example.mermentv1.ui.api;
 
-import com.example.apitest.LoginRequest;
-import com.example.apitest.LoginResponse;
+import com.example.mermentv1.model.SigninRequest;
+import com.example.mermentv1.model.SigninResponse;
+import com.example.mermentv1.model.SignupRequest;
+import com.example.mermentv1.model.SignupResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,5 +14,10 @@ public interface ApiService {
 
     @Headers("Content-Type: application/json")
     @POST("api/Authentication/Login")
-    Call<LoginResponse> login(@Body LoginRequest loginRequest);
+    Call<SigninResponse> login(@Body SigninRequest signinRequest);
+
+    @Headers({"accept: */*", "Content-Type: application/json"})
+    @POST("api/Authentication/Register")  // Ensure correct path
+    Call<SignupResponse> registerUser(@Body SignupRequest registerRequest);
+
 }
