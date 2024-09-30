@@ -3,5 +3,5 @@
 
 
     <solid android:color="@color/merent_color"/>
-    <corners android:radius="5dp"/>
+    <corners android:radius="35dp"/>
 </shape>

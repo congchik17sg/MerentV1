@@ -1,10 +1,11 @@
 package com.example.mermentv1.model;
 
-public class LoginResponse {
-    private String token;  // Adjust according to your API response
-    private String message;  // Example
+public class SigninResponse {
+    private String token;  // JWT or authentication token
+    private String message;  // Example message returned from the API
+    private String username; // Assuming the API response includes the username
 
-    // Getters and setters (optional, if needed)
+    // Getters and setters
     public String getToken() {
         return token;
     }
@@ -19,5 +20,13 @@ public class LoginResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getUsername() {
+        return username; // Getter for the username
+    }
+
+    public void setUsername(String username) {
+        this.username = username; // Setter for the username
     }
 }

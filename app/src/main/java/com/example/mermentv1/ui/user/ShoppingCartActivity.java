@@ -1,4 +1,4 @@
-package com.example.mermentv1;
+package com.example.mermentv1.ui.user;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.mermentv1.R;
 
 public class ShoppingCartActivity extends AppCompatActivity {
 
