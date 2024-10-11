@@ -13,6 +13,8 @@ navigationFragment = "2.8.0"
 navigationUi = "2.8.0"
 activity = "1.9.2"
 retrofit = "2.9.0"
+googleGmsGoogleServices = "4.4.2"
+firebaseStorage = "21.0.1"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -31,6 +33,8 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 # Retrofit and Gson Converter dependencies
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }

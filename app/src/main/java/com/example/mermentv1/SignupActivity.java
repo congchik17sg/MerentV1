@@ -36,7 +36,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(v -> {
             // Handle navigation to the login activity here
             Toast.makeText(SignupActivity.this, "Navigating to login", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(SignupActivity.this , SigninActivity.class);
+            Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
             startActivity(intent);
         });
 
@@ -61,11 +61,11 @@ public class SignupActivity extends AppCompatActivity {
             String phoneNumber = "123456789";  // Example phone number
             String gender = "male";  // Example gender
 
-            if (validateInputs(name, email, password)) {
-                registerUser(name, email, password, phoneNumber, gender);
-            } else {
-                Toast.makeText(SignupActivity.this, "Please check your input fields", Toast.LENGTH_SHORT).show();
-            }
+//            if (validateInputs(name, email, password)) {
+//                registerUser(name, email, password, phoneNumber, gender);
+//            } else {
+//                Toast.makeText(SignupActivity.this, "Please check your input fields", Toast.LENGTH_SHORT).show();
+//            }
         });
     }
 
@@ -85,32 +85,32 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     // Register user using the API
-    private void registerUser(String name, String email, String password, String phoneNumber, String gender) {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        SignupRequest request = new SignupRequest(name, email, password, phoneNumber, gender);
-
-        apiService.registerUser(request).enqueue(new Callback<SignupResponse>() {
-            @Override
-            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    SignupResponse signupResponse = response.body();
-                    if (signupResponse.isSuccess()) {
-                        // Handle successful registration
-                        Toast.makeText(SignupActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Handle registration failure
-                        Toast.makeText(SignupActivity.this, signupResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SignupResponse> call, Throwable t) {
-                // Handle request failure (e.g., network error)
-                Toast.makeText(SignupActivity.this, "Request failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void registerUser(String name, String email, String password, String phoneNumber, String gender) {
+//        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+//        SignupRequest request = new SignupRequest(name, email, password, phoneNumber, gender);
+//
+//        apiService.registerUser(request).enqueue(new Callback<SignupResponse>() {
+//            @Override
+//            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    SignupResponse signupResponse = response.body();
+//                    if (signupResponse.isSuccess()) {
+//                        // Handle successful registration
+//                        Toast.makeText(SignupActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        // Handle registration failure
+//                        Toast.makeText(SignupActivity.this, signupResponse.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<SignupResponse> call, Throwable t) {
+//                // Handle request failure (e.g., network error)
+//                Toast.makeText(SignupActivity.this, "Request failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 }

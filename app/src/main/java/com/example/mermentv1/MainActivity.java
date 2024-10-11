@@ -23,7 +23,7 @@ import com.example.mermentv1.ui.expendable.GroupObject;
 import com.example.mermentv1.ui.expendable.ItemObject;
 import com.example.mermentv1.ui.user.AboutUsActivity;
 import com.example.mermentv1.ui.user.AddActivity;
-import com.example.mermentv1.ui.user.CameraRecorederActivity;
+import com.example.mermentv1.ui.user.CameraRecorderActivity;
 import com.example.mermentv1.ui.user.HomeActivity;
 import com.example.mermentv1.ui.user.ShoppingCartActivity;
 import com.example.mermentv1.ui.user.UserActivity;
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Navigate to the CameraRecorder activity when "Máy ảnh/Quay Phim" is clicked
             if (group.getName().equals("Cho Thuê Thiết Bị") && item.getName().equals("Máy ảnh/Quay Phim")) {
-                Intent intent = new Intent(MainActivity.this, CameraRecorederActivity.class);
+                Intent intent = new Intent(MainActivity.this, CameraRecorderActivity.class);
                 startActivity(intent);
                 return true;
             }

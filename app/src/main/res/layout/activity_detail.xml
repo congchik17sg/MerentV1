@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_menu_gallery" />
+            android:src="@drawable/ic_menu_gallery" /> <!-- Placeholder image -->
     </androidx.cardview.widget.CardView>
 
     <!-- Name below the image -->
@@ -43,7 +43,7 @@
         android:text="Price"
         android:textSize="18sp" />
 
-    <!-- Description text below the card -->
+    <!-- Description text below the price -->
     <TextView
         android:id="@+id/detail_description"
         android:layout_width="wrap_content"
@@ -53,5 +53,45 @@
         android:textSize="16sp"
         android:textColor="@android:color/black"
         android:textStyle="normal" />
+
+    <!-- Small images for left, right, and side -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
+
+        <ImageView
+            android:id="@+id/left_image"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_menu_gallery" /> <!-- Placeholder image -->
+
+        <ImageView
+            android:id="@+id/right_image"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_menu_gallery" /> <!-- Placeholder image -->
+
+        <ImageView
+            android:id="@+id/side_image"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_menu_gallery" /> <!-- Placeholder image -->
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_add_to_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add to Cart"
+        android:layout_marginTop="20dp" />
 
 </LinearLayout>

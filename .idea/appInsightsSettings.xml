@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.mermentv1" />
+                  <option name="mobileSdkAppId" value="1:1074287554547:android:f6746068ef9afba600ec86" />
+                  <option name="projectId" value="thirdapp-f61cf" />
+                  <option name="projectNumber" value="1074287554547" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

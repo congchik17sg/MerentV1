@@ -1,32 +1,26 @@
 package com.example.mermentv1.model;
 
 public class SigninResponse {
-    private String token;  // JWT or authentication token
-    private String message;  // Example message returned from the API
-    private String username; // Assuming the API response includes the username
+    private boolean success;
+    private String message;
+    private String token;
 
-    // Getters and setters
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    // Getters
+    public boolean isSuccess() {
+        return success;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getToken() {
+        return token;
     }
 
-    public String getUsername() {
-        return username; // Getter for the username
-    }
-
-    public void setUsername(String username) {
-        this.username = username; // Setter for the username
+    // Optionally, if you need the name, you can add a field and getter here
+    public String getName() {
+        // Implement logic to extract name if needed
+        return ""; // Replace with actual logic if necessary
     }
 }

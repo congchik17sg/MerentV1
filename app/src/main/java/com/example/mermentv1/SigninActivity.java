@@ -1,7 +1,9 @@
 package com.example.mermentv1;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,17 +11,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mermentv1.ui.api.ApiClient;
 import com.example.mermentv1.ui.api.ApiService;
 import com.example.mermentv1.model.SigninRequest;
 import com.example.mermentv1.model.SigninResponse;
-import com.example.mermentv1.ui.api.UnsafeHttpClient;
 
-import okhttp3.OkHttpClient;
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SigninActivity extends AppCompatActivity {
 
@@ -36,20 +37,11 @@ public class SigninActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         btnSignin = findViewById(R.id.btn_signin);
-
-        // Find the btn_signup TextView
         TextView btnSignup = findViewById(R.id.btn_signup);
 
-        OkHttpClient unsafeHttpClient = UnsafeHttpClient.getUnsafeOkHttpClient();
+        // Set the API client
+        apiService = ApiClient.getClient(SigninActivity.this).create(ApiService.class);
 
-        // Initialize Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(unsafeHttpClient)
-                .baseUrl("https://10.0.2.2:7253/")  // Adjust to your actual base URL
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        apiService = retrofit.create(ApiService.class);
 
         // Set login button click listener
         btnSignin.setOnClickListener(v -> {
@@ -60,10 +52,18 @@ public class SigninActivity extends AppCompatActivity {
                 loginUser(email, password);  // Perform login if input is valid
             }
         });
+
         btnSignup.setOnClickListener(v -> {
             Intent intent = new Intent(SigninActivity.this, SignupActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void storeToken(String token) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("token", token);
+        editor.apply();
     }
 
     private boolean validateInput(String email, String password) {
@@ -88,28 +88,37 @@ public class SigninActivity extends AppCompatActivity {
         call.enqueue(new Callback<SigninResponse>() {
             @Override
             public void onResponse(Call<SigninResponse> call, Response<SigninResponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     SigninResponse signinResponse = response.body();
-                    String username = signinResponse.getUsername();  // Assuming getUsername() exists in SigninResponse
+                    String name = signinResponse.getName();
+                    String token = signinResponse.getToken(); // Get the token from the response
 
-                    // Handle successful response (e.g., save token)
+                    // Handle successful response
                     Toast.makeText(SigninActivity.this, "Login successful: " + signinResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    // Store the token for future use
+                    storeToken(token);
 
                     // Pass the username to MainActivity
                     Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                    intent.putExtra("USERNAME", username);
+                    intent.putExtra("name", name);
                     startActivity(intent);
                     finish();
-
                 } else {
-                    // Handle API error response
-                    Toast.makeText(SigninActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                    // Log the error response
+                    try {
+                        String errorResponse = response.errorBody().string();
+                        Log.e("RetrofitError", "Error: " + errorResponse);
+                        Toast.makeText(SigninActivity.this, "Login failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<SigninResponse> call, Throwable t) {
-                // Handle connection failure
+                Log.e("RetrofitError", "Error: " + t.getMessage(), t);
                 Toast.makeText(SigninActivity.this, "Connection failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
