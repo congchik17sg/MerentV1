@@ -43,7 +43,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/mplus1regular"
                 android:gravity="left"
-                android:text="Thanh Toán"
+                android:text="Liên hệ"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 

@@ -11,15 +11,28 @@ public class CartManager {
         cartItems = new ArrayList<>();
     }
 
-    public static CartManager getInstance() {
+    public static synchronized CartManager getInstance() {
         if (instance == null) {
             instance = new CartManager();
         }
         return instance;
     }
 
+    // Add a method to check if the item is already in the cart
+    public boolean isProductInCart(String productName) {
+        for (CartModel item : cartItems) {
+            if (item.getName().equalsIgnoreCase(productName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Add item to cart only if it's not already added
     public void addItem(CartModel item) {
-        cartItems.add(item);
+        if (!isProductInCart(item.getName())) {
+            cartItems.add(item);
+        }
     }
 
     public List<CartModel> getCartItems() {

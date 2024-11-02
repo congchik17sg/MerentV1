@@ -1,16 +1,24 @@
 package com.example.mermentv1.ui.api;
 
+import com.example.mermentv1.model.PaymentRequest;
+import com.example.mermentv1.model.PaymentResponse;
+import com.example.mermentv1.model.Product;
 import com.example.mermentv1.model.ProductResponse;
 import com.example.mermentv1.model.SigninRequest;
 import com.example.mermentv1.model.SigninResponse;
 import com.example.mermentv1.model.SignupRequest;
 import com.example.mermentv1.model.SignupResponse;
+import com.example.mermentv1.model.UserResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -21,11 +29,28 @@ public interface ApiService {
 
     // Registration request
     @Headers({"accept: */*", "Content-Type: application/json"})
-    @POST("api/Authentication/Register")
+    @POST("Authentication/Register")
     Call<SignupResponse> registerUser(@Body SignupRequest registerRequest);
 
-    // Fetch products
-    @Headers("accept: */*")
+//    // Fetch all products
+//    @Headers("accept: */*")
+//    @GET("Product")
+//    Call<ProductResponse> getProducts();
+
+    // Fetch products by category
     @GET("Product")
-    Call<ProductResponse> getProducts();
+    Call<ProductResponse> getProductsByCategory(@Query("category") String category);
+
+    @GET("Product")
+    Call<ProductResponse> getAllProducts();
+
+
+    @GET("User/me")
+    Call<UserResponse> getUserDetails(@Header("Authorization") String token);
+
+    @POST("Wallet/create-payment-link-payos")
+    Call<PaymentResponse> createPaymentLink(
+            @Header("Authorization") String authToken,
+            @Body PaymentRequest paymentRequest
+    );
 }

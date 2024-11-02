@@ -20,10 +20,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     private Context context;
     private List<CartModel> cartList;
+    private OnQuantityChangeListener quantityChangeListener;
 
-    public CartAdapter(Context context, List<CartModel> cartList) {
+    public CartAdapter(Context context, List<CartModel> cartList , OnQuantityChangeListener quantityChangeListener) {
         this.context = context;
         this.cartList = cartList;
+        this.quantityChangeListener = quantityChangeListener;
     }
 
     @NonNull
@@ -39,6 +41,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         holder.productName.setText(cartModel.getName());
         holder.productQuantity.setText(String.valueOf(cartModel.getQuantity()));
+        holder.productPrice.setText(cartModel.getPrice());
 
         Glide.with(context)
                 .load(cartModel.getImageUrl())
@@ -48,6 +51,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             int quantity = cartModel.getQuantity();
             cartModel.setQuantity(++quantity);
             notifyItemChanged(position);
+            quantityChangeListener.onQuantityChanged(cartModel, quantity); // Pass model and new quantity
         });
 
         holder.minusButton.setOnClickListener(v -> {
@@ -55,6 +59,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             if (quantity > 1) {
                 cartModel.setQuantity(--quantity);
                 notifyItemChanged(position);
+                quantityChangeListener.onQuantityChanged(cartModel, quantity); // Pass model and new quantity
+            } else if (quantity == 1) {
+                // Remove item from the cart if quantity is 1 and minus is clicked
+                cartList.remove(position);
+                notifyItemRemoved(position);
+                quantityChangeListener.onQuantityChanged(cartModel, 0); // Notify that the item is removed
             }
         });
     }
@@ -65,7 +75,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     public static class CartViewHolder extends RecyclerView.ViewHolder {
-        TextView productName, productQuantity;
+        TextView productName, productQuantity , productPrice;
         ImageView productImage;
         Button plusButton, minusButton;
 
@@ -73,9 +83,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             super(itemView);
             productName = itemView.findViewById(R.id.product_name);
             productQuantity = itemView.findViewById(R.id.product_quantity);
+            productPrice = itemView.findViewById(R.id.product_price);
             productImage = itemView.findViewById(R.id.product_image);
             plusButton = itemView.findViewById(R.id.btn_plus);
             minusButton = itemView.findViewById(R.id.btn_minus);
         }
     }
+    public interface OnQuantityChangeListener {
+        void onQuantityChanged(CartModel cartModel, int newQuantity);
+    }
+
 }

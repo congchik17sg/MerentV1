@@ -15,8 +15,7 @@ import java.util.Map;
 public class ExpendableListViewAdapter extends BaseExpandableListAdapter {
 
     private List<GroupObject> mListGroup;
-    private Map<GroupObject , List<ItemObject>> mListItems;
-
+    private Map<GroupObject, List<ItemObject>> mListItems;
 
     public ExpendableListViewAdapter(MainActivity mainActivity, List<GroupObject> mListGroup, Map<GroupObject, List<ItemObject>> mListItems) {
         this.mListGroup = mListGroup;
@@ -25,17 +24,15 @@ public class ExpendableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-       if(mListGroup != null){
-           return mListGroup.size();
-       }
-        return 0;
+        return mListGroup != null ? mListGroup.size() : 0;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-       if(mListGroup != null && mListItems != null){
-           return mListItems.get(mListGroup.get(groupPosition)).size();
-       }
+        if (mListGroup != null && mListItems != null) {
+            List<ItemObject> items = mListItems.get(mListGroup.get(groupPosition));
+            return items != null ? items.size() : 0;
+        }
         return 0;
     }
 
@@ -45,14 +42,14 @@ public class ExpendableListViewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosition)  {
-//        return mListItems.get(mListGroup.get(groupPosition));
-        return mListItems.get(mListGroup.get(groupPosition)).get(childPosition);
+    public Object getChild(int groupPosition, int childPosition) {
+        List<ItemObject> items = mListItems.get(mListGroup.get(groupPosition));
+        return items != null ? items.get(childPosition) : null;
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-       GroupObject groupObject = mListGroup.get(groupPosition);
+        GroupObject groupObject = mListGroup.get(groupPosition);
         return groupObject.getId();
     }
 
@@ -69,31 +66,53 @@ public class ExpendableListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-       if(convertView == null){
-           convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_group, parent,false);
+        ViewHolderGroup holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_group, parent, false);
+            holder = new ViewHolderGroup();
+            holder.tv_group = convertView.findViewById(R.id.tv_group);
+            convertView.setTag(holder);  // Store the view holder
+        } else {
+            holder = (ViewHolderGroup) convertView.getTag();  // Retrieve the view holder
+        }
 
-           TextView tv_group = convertView.findViewById(R.id.tv_group);
-           GroupObject groupObject = mListGroup.get( groupPosition);
-           tv_group.setText(groupObject.getName().toUpperCase());
-       }
+        // Always update the TextView text
+        GroupObject groupObject = mListGroup.get(groupPosition);
+        holder.tv_group.setText(groupObject.getName().toUpperCase());
+
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if(convertView == null){
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item, parent,false);
-
-            TextView tv_item = convertView.findViewById(R.id.tv_item);
-            ItemObject itemObject = mListItems.get(mListGroup.get(groupPosition)).get(childPosition);
-            tv_item.setText(itemObject.getName());
+        ViewHolderChild holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item, parent, false);
+            holder = new ViewHolderChild();
+            holder.tv_item = convertView.findViewById(R.id.tv_item);
+            convertView.setTag(holder);  // Store the view holder
+        } else {
+            holder = (ViewHolderChild) convertView.getTag();  // Retrieve the view holder
         }
+
+        // Always update the TextView text
+        ItemObject itemObject = mListItems.get(mListGroup.get(groupPosition)).get(childPosition);
+        holder.tv_item.setText(itemObject.getName());
 
         return convertView;
     }
 
     @Override
-    public boolean isChildSelectable(int i, int i1) {
-        return true ;
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+    // View holder classes for better performance
+    static class ViewHolderGroup {
+        TextView tv_group;
+    }
+
+    static class ViewHolderChild {
+        TextView tv_item;
     }
 }

@@ -13,59 +13,50 @@ import com.example.mermentv1.model.SignupRequest;
 import com.example.mermentv1.model.SignupResponse;
 import com.example.mermentv1.ui.api.ApiClient;
 import com.example.mermentv1.ui.api.ApiService;
-import com.example.mermentv1.ui.api.UnsafeHttpClient;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignupActivity extends AppCompatActivity {
 
     private ApiService apiService;
+    private EditText edtUsername, edtEmail, edtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // Navigate to login when clicking the login button
+        // Navigate to SigninActivity when clicking the sign-in text
         TextView btnSignIn = findViewById(R.id.btn_signin);
         btnSignIn.setOnClickListener(v -> {
-            // Handle navigation to the login activity here
-            Toast.makeText(SignupActivity.this, "Navigating to login", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
             startActivity(intent);
         });
 
+        // Initialize the API service
+        apiService = ApiClient.getClient(SignupActivity.this).create(ApiService.class);
 
-        OkHttpClient unsafeHttpClient = UnsafeHttpClient.getUnsafeOkHttpClient();
-
-        // Initialize Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(unsafeHttpClient)
-                .baseUrl("https://10.0.2.2:7253/")  // Adjust to your actual base URL
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        apiService = retrofit.create(ApiService.class);
+        // Initialize views
+        edtUsername = findViewById(R.id.edt_username);
+        edtEmail = findViewById(R.id.edt_email);
+        edtPassword = findViewById(R.id.edt_password);
+        Button btnSignup = findViewById(R.id.btn_signup);
 
         // Handle user registration when clicking the signup button
-        Button btnSignup = findViewById(R.id.btn_signup);
         btnSignup.setOnClickListener(v -> {
-            String name = ((EditText) findViewById(R.id.edt_username)).getText().toString();
-            String email = ((EditText) findViewById(R.id.edt_email)).getText().toString();
-            String password = ((EditText) findViewById(R.id.edt_password)).getText().toString();
-            String phoneNumber = "123456789";  // Example phone number
-            String gender = "male";  // Example gender
+            String name = edtUsername.getText().toString().trim();
+            String email = edtEmail.getText().toString().trim();
+            String password = edtPassword.getText().toString().trim();
+            String phoneNumber = "123456789"; // Example, or add EditText for user input
+            String gender = "male";  // Example, or add a spinner/selection for gender
 
-//            if (validateInputs(name, email, password)) {
-//                registerUser(name, email, password, phoneNumber, gender);
-//            } else {
-//                Toast.makeText(SignupActivity.this, "Please check your input fields", Toast.LENGTH_SHORT).show();
-//            }
+            if (validateInputs(name, email, password)) {
+                registerUser(name, email, password, phoneNumber, gender);  // Call registration method if valid
+            } else {
+                Toast.makeText(SignupActivity.this, "Please check your input fields", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -84,33 +75,37 @@ public class SignupActivity extends AppCompatActivity {
         return true;
     }
 
-    // Register user using the API
-//    private void registerUser(String name, String email, String password, String phoneNumber, String gender) {
-//        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-//        SignupRequest request = new SignupRequest(name, email, password, phoneNumber, gender);
-//
-//        apiService.registerUser(request).enqueue(new Callback<SignupResponse>() {
-//            @Override
-//            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    SignupResponse signupResponse = response.body();
-//                    if (signupResponse.isSuccess()) {
-//                        // Handle successful registration
-//                        Toast.makeText(SignupActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        // Handle registration failure
-//                        Toast.makeText(SignupActivity.this, signupResponse.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<SignupResponse> call, Throwable t) {
-//                // Handle request failure (e.g., network error)
-//                Toast.makeText(SignupActivity.this, "Request failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    /* Register user using the API */
+    private void registerUser(String name, String email, String password, String phoneNumber, String gender) {
+        SignupRequest request = new SignupRequest(name, email, password, phoneNumber, gender);
+
+        apiService.registerUser(request).enqueue(new Callback<SignupResponse>() {
+            @Override
+            public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    SignupResponse signupResponse = response.body();
+                    if (signupResponse.isSuccess()) {
+                        // Handle successful registration
+                        Toast.makeText(SignupActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
+
+                        // Redirect to SigninActivity after registration
+                        Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
+                        startActivity(intent);
+                        finish();  // Optional: close the signup activity
+                    } else {
+                        // Handle registration failure
+                        Toast.makeText(SignupActivity.this, signupResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(SignupActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignupResponse> call, Throwable t) {
+                // Handle request failure (e.g., network error)
+                Toast.makeText(SignupActivity.this, "Request failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

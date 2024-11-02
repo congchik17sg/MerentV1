@@ -2,6 +2,7 @@ package com.example.mermentv1.ui.user;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,18 +14,26 @@ import com.example.mermentv1.R;
 
 public class SettingActivity extends AppCompatActivity {
 
+    private TextView txtUsername, txtEmail, txtAddress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_setting);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
+//        txtUsername = findViewById(R.id.txt_username);
+//        txtEmail = findViewById(R.id.txt_email);
+//        txtAddress = findViewById(R.id.txt_address);
 
+        // Get user details from intent
+        String username = getIntent().getStringExtra("username");
+        String email = getIntent().getStringExtra("email");
+        String address = getIntent().getStringExtra("address");
+
+        // Set user details to TextViews
+        txtUsername.setText(username);
+        txtEmail.setText(email);
+        txtAddress.setText(address);
     }
     public void back(View view){
         finish();

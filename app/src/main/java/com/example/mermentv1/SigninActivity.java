@@ -15,6 +15,8 @@ import com.example.mermentv1.ui.api.ApiClient;
 import com.example.mermentv1.ui.api.ApiService;
 import com.example.mermentv1.model.SigninRequest;
 import com.example.mermentv1.model.SigninResponse;
+import com.example.mermentv1.model.UserResponse;
+import com.example.mermentv1.ui.user.SettingActivity;
 
 import java.io.IOException;
 
@@ -41,7 +43,6 @@ public class SigninActivity extends AppCompatActivity {
 
         // Set the API client
         apiService = ApiClient.getClient(SigninActivity.this).create(ApiService.class);
-
 
         // Set login button click listener
         btnSignin.setOnClickListener(v -> {
@@ -90,7 +91,6 @@ public class SigninActivity extends AppCompatActivity {
             public void onResponse(Call<SigninResponse> call, Response<SigninResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     SigninResponse signinResponse = response.body();
-                    String name = signinResponse.getName();
                     String token = signinResponse.getToken(); // Get the token from the response
 
                     // Handle successful response
@@ -99,11 +99,8 @@ public class SigninActivity extends AppCompatActivity {
                     // Store the token for future use
                     storeToken(token);
 
-                    // Pass the username to MainActivity
-                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                    intent.putExtra("name", name);
-                    startActivity(intent);
-                    finish();
+                    // Fetch user details using the token
+                    fetchUserDetails(token);
                 } else {
                     // Log the error response
                     try {
@@ -118,6 +115,46 @@ public class SigninActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SigninResponse> call, Throwable t) {
+                Log.e("RetrofitError", "Error: " + t.getMessage(), t);
+                Toast.makeText(SigninActivity.this, "Connection failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchUserDetails(String token) {
+        // Make a call to get the user details using the token
+        Call<UserResponse> call = apiService.getUserDetails("Bearer " + token);
+
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    UserResponse userResponse = response.body();
+
+                    // Get user data from userResponse
+                    UserResponse.UserData userData = userResponse.getData();
+
+                    // Start MainActivity and pass the user details
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                    intent.putExtra("username", userData.getName());  // Pass user's name
+//                    intent.putExtra("email", userData.getEmail());    // Pass user's email
+                    // Pass other details as needed
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // Handle error
+                    try {
+                        String errorResponse = response.errorBody().string();
+                        Log.e("RetrofitError", "Error: " + errorResponse);
+                        Toast.makeText(SigninActivity.this, "Failed to fetch user details.", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
                 Log.e("RetrofitError", "Error: " + t.getMessage(), t);
                 Toast.makeText(SigninActivity.this, "Connection failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }

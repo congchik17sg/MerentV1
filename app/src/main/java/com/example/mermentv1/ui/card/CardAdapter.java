@@ -63,6 +63,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             // Pass name, price, and all image URLs to DetailActivity
             intent.putExtra("cardName", cardModel.getName());
             intent.putExtra("cardPrice", cardModel.getPrice());
+            intent.putExtra("cardDescription", cardModel.getDescription()); // Pass description")
 
             if (cardModel.getImageUrl().startsWith("http")) {
                 // It's a URL, pass as string

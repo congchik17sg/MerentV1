@@ -1,3 +1,4 @@
 <resources>
     <dimen name="fab_margin">200dp</dimen>
+    <dimen name="recycler_view_spacing">3dp</dimen>
 </resources>
