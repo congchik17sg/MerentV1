@@ -2,15 +2,8 @@ package com.example.mermentv1.ui.api;
 
 import com.example.mermentv1.model.PaymentRequest;
 import com.example.mermentv1.model.PaymentResponse;
-import com.example.mermentv1.model.Product;
 import com.example.mermentv1.model.ProductResponse;
-import com.example.mermentv1.model.SigninRequest;
-import com.example.mermentv1.model.SigninResponse;
-import com.example.mermentv1.model.SignupRequest;
-import com.example.mermentv1.model.SignupResponse;
 import com.example.mermentv1.model.UserResponse;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

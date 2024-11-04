@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.mermentv1.R;
-import com.example.mermentv1.cart.CartManager;
-import com.example.mermentv1.cart.CartModel;
 
 public class DetailActivity extends AppCompatActivity {
 

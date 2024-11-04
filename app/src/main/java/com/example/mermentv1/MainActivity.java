@@ -19,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mermentv1.databinding.ActivityMainBinding;
@@ -39,9 +37,7 @@ import com.example.mermentv1.ui.user.LensActivity;
 import com.example.mermentv1.ui.user.SearchActivity;
 import com.example.mermentv1.ui.user.CameraRecorderActivity;
 import com.example.mermentv1.ui.user.GimbalActivity;
-import com.example.mermentv1.ui.user.HomeActivity;
 import com.example.mermentv1.ui.user.LightActivity;
-import com.example.mermentv1.ui.user.ShoppingCartActivity;
 import com.example.mermentv1.ui.user.UserActivity;
 
 import java.io.IOException;
