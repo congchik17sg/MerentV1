@@ -60,7 +60,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2") // Logging interceptor
-
+    
     // Glide for image loading
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0' // Use kapt for Kotlin")
