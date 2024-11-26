@@ -4,16 +4,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mermentv1.R;
-import com.example.mermentv1.model.Product;
+import com.example.mermentv1.model.ProductItem;
 import com.example.mermentv1.model.ProductResponse;
 import com.example.mermentv1.ui.api.ApiService;
 import com.example.mermentv1.ui.card.CardAdapter;
@@ -58,10 +54,10 @@ public class LightActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Product> products = response.body().getData();
-                    if (products != null && !products.isEmpty()) {
-                        Log.d("API_SUCCESS", "Fetched " + products.size() + " camera products.");
-                        updateCardList(products);  // Update the RecyclerView or card list
+                    List<ProductItem> productItems = response.body().getData();
+                    if (productItems != null && !productItems.isEmpty()) {
+                        Log.d("API_SUCCESS", "Fetched " + productItems.size() + " camera products.");
+                        updateCardList(productItems);  // Update the RecyclerView or card list
                     } else {
                         // Show a toast if the product list is empty
                         Toast.makeText(LightActivity.this, "No products available", Toast.LENGTH_SHORT).show();
@@ -77,21 +73,21 @@ public class LightActivity extends AppCompatActivity {
         });
     }
 
-    private void updateCardList(List<Product> products) {
-        if (products != null && !products.isEmpty()) {
+    private void updateCardList(List<ProductItem> productItems) {
+        if (productItems != null && !productItems.isEmpty()) {
             cardList = new ArrayList<>();
 
             // Filter products where productType equals "camera"
-            for (Product product : products) {
-                if ("Lightning".equalsIgnoreCase(product.getProductType())) {
+            for (ProductItem productItem : productItems) {
+                if ("Lightning".equalsIgnoreCase(productItem.getProductType())) {
                     cardList.add(new CardModel(
-                            product.getName(),
-                            product.getPrice() + "VND",
-                            product.getDescription(),
-                            product.getUrlCenter(),  // Main image URL
-                            product.getUrlLeft(),    // Left image URL
-                            product.getUrlRight(),   // Right image URL
-                            product.getUrlSide()     // Side image URL
+                            productItem.getName(),
+                            productItem.getPrice() + "VND",
+                            productItem.getDescription(),
+                            productItem.getUrlCenter(),  // Main image URL
+                            productItem.getUrlLeft(),    // Left image URL
+                            productItem.getUrlRight(),   // Right image URL
+                            productItem.getUrlSide()     // Side image URL
                     ));
                 }
             }

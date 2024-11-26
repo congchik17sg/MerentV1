@@ -2,6 +2,7 @@ package com.example.mermentv1.ui.user;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,7 +124,8 @@ public class TOandPOActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                     allTransactions.clear();
                     allTransactions.addAll(response.body().getData());
-                    loadPage(currentPage);
+                    Log.d("TOandPOActivity", "Transactions fetched: " + response.body().getData().size());
+                    loadPage(currentPage); // Load the first page
                 } else {
                     Toast.makeText(TOandPOActivity.this, "Failed to fetch transactions.", Toast.LENGTH_SHORT).show();
                 }
@@ -155,11 +157,13 @@ public class TOandPOActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     allProductOrders.clear();
                     allProductOrders.addAll(response.body());
-                    loadOrderPage(currentOrderPage);
+                    Log.d("TOandPOActivity", "Product orders fetched: " + response.body().size());
+                    loadOrderPage(currentOrderPage); // Load the first page
                 } else {
                     Toast.makeText(TOandPOActivity.this, "Failed to fetch product orders.", Toast.LENGTH_SHORT).show();
                 }
             }
+
 
             @Override
             public void onFailure(@NonNull Call<List<ProductOrder>> call, @NonNull Throwable t) {

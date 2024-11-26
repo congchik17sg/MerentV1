@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mermentv1.R;
-import com.example.mermentv1.model.Product;
+import com.example.mermentv1.model.ProductItem;
 import com.example.mermentv1.model.ProductAdapter;
 import com.example.mermentv1.model.ProductResponse;
 import com.example.mermentv1.ui.api.ApiClient;
@@ -30,8 +30,8 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
-    private List<Product> allProducts = new ArrayList<>();
-    private List<Product> filteredProducts = new ArrayList<>();
+    private List<ProductItem> allProductItems = new ArrayList<>();
+    private List<ProductItem> filteredProductItems = new ArrayList<>();
     private ApiService apiService;
 
     @Override
@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity {
         apiService = ApiClient.getClient(this).create(ApiService.class);
 
         // Initialize adapter
-        productAdapter = new ProductAdapter(filteredProducts, this);
+        productAdapter = new ProductAdapter(filteredProductItems, this);
         recyclerView.setAdapter(productAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -89,14 +89,14 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Product> products = response.body().getData();
-                    if (products != null && !products.isEmpty()) {
-                        allProducts.clear();
-                        allProducts.addAll(products);
-                        filteredProducts.clear();
-                        filteredProducts.addAll(products);
+                    List<ProductItem> productItems = response.body().getData();
+                    if (productItems != null && !productItems.isEmpty()) {
+                        allProductItems.clear();
+                        allProductItems.addAll(productItems);
+                        filteredProductItems.clear();
+                        filteredProductItems.addAll(productItems);
                         productAdapter.notifyDataSetChanged();
-                        Log.d("API_SUCCESS", "Fetched " + products.size() + " products.");
+                        Log.d("API_SUCCESS", "Fetched " + productItems.size() + " products.");
                     } else {
                         Toast.makeText(SearchActivity.this, "No products available", Toast.LENGTH_SHORT).show();
                     }
@@ -114,10 +114,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void filterProducts(String query) {
-        filteredProducts.clear();
-        for (Product product : allProducts) {
-            if (product.getName().toLowerCase().contains(query.toLowerCase())) {
-                filteredProducts.add(product);
+        filteredProductItems.clear();
+        for (ProductItem productItem : allProductItems) {
+            if (productItem.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredProductItems.add(productItem);
             }
         }
         productAdapter.notifyDataSetChanged();

@@ -3,16 +3,16 @@ package com.example.mermentv1.model;
 import java.util.List;
 
 public class ProductResponse {
-    private List<Product> data;
+    private List<ProductItem> data;
     private boolean success;
     private String message;
     private String error;
 
-    public List<Product> getData() {
+    public List<ProductItem> getData() {
         return data;
     }
 
-    public void setData(List<Product> data) {
+    public void setData(List<ProductItem> data) {
         this.data = data;
     }
 

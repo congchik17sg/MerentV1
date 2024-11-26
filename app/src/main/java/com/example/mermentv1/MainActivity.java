@@ -22,7 +22,7 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.example.mermentv1.databinding.ActivityMainBinding;
-import com.example.mermentv1.model.Product;
+import com.example.mermentv1.model.ProductItem;
 import com.example.mermentv1.model.ProductResponse;
 import com.example.mermentv1.ui.api.ApiService;
 import com.example.mermentv1.ui.card.CardAdapter;
@@ -33,6 +33,7 @@ import com.example.mermentv1.ui.expendable.ItemObject;
 import com.example.mermentv1.ui.user.AboutUsActivity;
 import com.example.mermentv1.ui.user.AccessoriesActivity;
 import com.example.mermentv1.ui.user.CameraLegActivity;
+import com.example.mermentv1.ui.user.ComboActivity;
 import com.example.mermentv1.ui.user.LensActivity;
 import com.example.mermentv1.ui.user.SearchActivity;
 import com.example.mermentv1.ui.user.CameraRecorderActivity;
@@ -190,8 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         List<ItemObject> objectsList3 = new ArrayList<>();
-        objectsList3.add(new ItemObject(3, "Combo Máy Ảnh"));
-        objectsList3.add(new ItemObject(3, "Combo Quay Chụp"));
+
 
         listMap.put(groupObject1, objectsList1);
         listMap.put(groupObject2, objectsList2);
@@ -251,6 +251,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;  // Return true to indicate that the click was handled
             }
+            if (group.getName().equals("Combo")) {
+                Intent intent = new Intent(MainActivity.this, ComboActivity.class);
+                startActivity(intent);
+                return true;  // Return true to indicate that the click was handled
+            }
 
             return false;  // Return false to allow the default behavior of expanding/collapsing the group
         });
@@ -269,10 +274,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Product> products = response.body().getData();
-                    if (products != null && !products.isEmpty()) {
-                        Log.d("API_SUCCESS", "Fetched " + products.size() + " products.");
-                        displayRandomProduct(products); // Display only one random product
+                    List<ProductItem> productItems = response.body().getData();
+                    if (productItems != null && !productItems.isEmpty()) {
+                        Log.d("API_SUCCESS", "Fetched " + productItems.size() + " products.");
+                        displayRandomProduct(productItems); // Display only one random product
                     } else {
                         Toast.makeText(MainActivity.this, "No products available", Toast.LENGTH_SHORT).show();
                     }
@@ -289,23 +294,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void displayRandomProduct(List<Product> products) {
+    private void displayRandomProduct(List<ProductItem> productItems) {
         cardList.clear();
         Random random = new Random();
-        Product randomProduct = products.get(random.nextInt(products.size()));
+        ProductItem randomProductItem = productItems.get(random.nextInt(productItems.size()));
 
         cardList.add(new CardModel(
-                randomProduct.getName(),
-                randomProduct.getPrice() + " VND",
-                randomProduct.getDescription(),
-                randomProduct.getUrlCenter(),
-                randomProduct.getUrlLeft(),
-                randomProduct.getUrlRight(),
-                randomProduct.getUrlSide()
+                randomProductItem.getName(),
+                randomProductItem.getPrice() + " VND",
+                randomProductItem.getDescription(),
+                randomProductItem.getUrlCenter(),
+                randomProductItem.getUrlLeft(),
+                randomProductItem.getUrlRight(),
+                randomProductItem.getUrlSide()
         ));
 
         cardAdapter.notifyDataSetChanged();
-        Log.d("RecyclerView", "Displayed 1 random product: " + randomProduct.getName());
+        Log.d("RecyclerView", "Displayed 1 random product: " + randomProductItem.getName());
     }
 
     private void handleApiError(Response<ProductResponse> response) {

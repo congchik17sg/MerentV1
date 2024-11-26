@@ -1,9 +1,12 @@
 package com.example.mermentv1.ui.api;
 
+import com.example.mermentv1.model.ComboItem;
+//import com.example.mermentv1.model.ComboResponse;
+import com.example.mermentv1.model.ComboResponse;
+import com.example.mermentv1.model.ProductItem;
 import com.example.mermentv1.model.ProductOrder;
 import com.example.mermentv1.model.PaymentRequest;
 import com.example.mermentv1.model.PaymentResponse;
-import com.example.mermentv1.model.ProductOrderResponse;
 import com.example.mermentv1.model.ProductResponse;
 import com.example.mermentv1.model.SigninRequest;
 import com.example.mermentv1.model.SigninResponse;
@@ -84,6 +87,19 @@ public interface ApiService {
 
     @GET("ProductOrder/user/{user_id}")
     Call<List<ProductOrder>> getProductOrdersByUser(@Path("user_id") int userId);
+
+//    @GET("ComboOfProduct/All-Product-ByCombo")
+//    Call<List<ComboItem>> getComboProducts(); // Endpoint to fetch all combos
+
+    @GET("ComboOfProduct/All-Product-ByCombo")
+    Call<ComboResponse> getComboProducts();
+
+
+    @GET("combos/{comboID}/products")
+    Call<List<ProductItem>> getProductsByCombo(@Path("comboID") int comboID);
+
+//    @GET("ComboOfProduct/All-Product-ByCombo")
+//    Call<ComboResponse> getAllComboProducts();
 
 
 }

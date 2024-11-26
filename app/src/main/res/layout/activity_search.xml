@@ -8,7 +8,7 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:queryHint="Search products" />
+        android:queryHint="Search productItems" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

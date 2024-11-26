@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
-    private List<Product> productList;
+    private List<ProductItem> productItemList;
     private Context context;
     private OnItemClickListener onItemClickListener;
 
     // Interface for item clicks
     public interface OnItemClickListener {
-        void onItemClick(Product product);
+        void onItemClick(ProductItem productItem);
     }
 
     // Setter for the listener
@@ -32,8 +32,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.onItemClickListener = listener;
     }
 
-    public ProductAdapter(List<Product> productList, Context context) {
-        this.productList = productList;
+    public ProductAdapter(List<ProductItem> productItemList, Context context) {
+        this.productItemList = productItemList;
         this.context = context;
     }
 
@@ -46,27 +46,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = productList.get(position);
-        holder.nameTextView.setText(product.getName());
+        ProductItem productItem = productItemList.get(position);
+        holder.nameTextView.setText(productItem.getName());
 
         // Format price with commas and append "VND"
-        String formattedPrice = formatPriceWithVND(product.getPrice());
+        String formattedPrice = formatPriceWithVND(productItem.getPrice());
         holder.priceTextView.setText(formattedPrice);
 
         // Load product image using Glide
-        Glide.with(context).load(product.getUrlCenter()).into(holder.imageView);
+        Glide.with(context).load(productItem.getUrlCenter()).into(holder.imageView);
 
         // Handle item clicks
         holder.itemView.setOnClickListener(v -> {
             if (onItemClickListener != null) {
-                onItemClickListener.onItemClick(product);
+                onItemClickListener.onItemClick(productItem);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return productItemList.size();
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
