@@ -1,5 +1,6 @@
 package com.example.mermentv1.ui.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SearchView;
@@ -15,6 +16,7 @@ import com.example.mermentv1.model.ProductAdapter;
 import com.example.mermentv1.model.ProductResponse;
 import com.example.mermentv1.ui.api.ApiClient;
 import com.example.mermentv1.ui.api.ApiService;
+import com.example.mermentv1.ui.card.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +42,32 @@ public class SearchActivity extends AppCompatActivity {
         searchView = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.recyclerView);
 
-        // Initialize ApiService using ApiClient
+        // Initialize ApiService
         apiService = ApiClient.getClient(this).create(ApiService.class);
 
-        // Pass both filteredProducts and context to the adapter
+        // Initialize adapter
         productAdapter = new ProductAdapter(filteredProducts, this);
         recyclerView.setAdapter(productAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Fetch products from the API
+        // Set item click listener
+        productAdapter.setOnItemClickListener(product -> {
+            Intent intent = new Intent(SearchActivity.this, DetailActivity.class);
+            intent.putExtra("cardName", product.getName());
+//            intent.putExtra("cardPrice", product.getPrice());
+            intent.putExtra("cardPrice", String.valueOf(product.getPrice()) + " VND");
+            intent.putExtra("cardDescription", product.getDescription());
+            intent.putExtra("urlCenter", product.getUrlCenter());
+            intent.putExtra("urlLeft", product.getUrlLeft());
+            intent.putExtra("urlRight", product.getUrlRight());
+            intent.putExtra("urlSide", product.getUrlSide());
+            startActivity(intent);
+        });
+
+        // Fetch products
         fetchProducts();
 
-        // Set up SearchView listener
+        // SearchView listener
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -78,7 +94,7 @@ public class SearchActivity extends AppCompatActivity {
                         allProducts.clear();
                         allProducts.addAll(products);
                         filteredProducts.clear();
-                        filteredProducts.addAll(products); // Show all initially
+                        filteredProducts.addAll(products);
                         productAdapter.notifyDataSetChanged();
                         Log.d("API_SUCCESS", "Fetched " + products.size() + " products.");
                     } else {
@@ -99,7 +115,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private void filterProducts(String query) {
         filteredProducts.clear();
-
         for (Product product : allProducts) {
             if (product.getName().toLowerCase().contains(query.toLowerCase())) {
                 filteredProducts.add(product);

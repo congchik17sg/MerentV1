@@ -50,6 +50,11 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
         // Get cart items from CartManager
         cartList = CartManager.getInstance().getCartItems();
 
+        // Debug log to verify cart data
+        for (CartModel item : cartList) {
+            Log.d("CartItem", "Name: " + item.getName() + ", Price: " + item.getPrice() + ", Quantity: " + item.getQuantity());
+        }
+
         // Set up the adapter
         cartAdapter = new CartAdapter(this, cartList, this);
         recyclerView.setAdapter(cartAdapter);
@@ -65,7 +70,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
             } else {
                 // Calculate total amount and initiate payment link creation
                 double totalAmount = calculateTotalAmount();
-                createPaymentLink((int) totalAmount);  // Cast to int
+                createPaymentLink((int) totalAmount); // Cast to int
             }
         });
 
@@ -83,9 +88,18 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
     private double calculateTotalAmount() {
         double totalAmount = 0;
         for (CartModel cartModel : cartList) {
-            // Remove non-numeric characters from the price string and parse it
-            String priceString = cartModel.getPrice().replaceAll("[^\\d.]", "");
-            totalAmount += cartModel.getQuantity() * Double.parseDouble(priceString);
+            String priceString = cartModel.getPrice();
+            if (priceString != null) {
+                try {
+                    // Remove non-numeric characters from the price string and parse it
+                    priceString = priceString.replaceAll("[^\\d.]", "");
+                    totalAmount += cartModel.getQuantity() * Double.parseDouble(priceString);
+                } catch (NumberFormatException e) {
+                    Log.e("ShoppingCart", "Invalid price format for item: " + cartModel.getName());
+                }
+            } else {
+                Log.e("ShoppingCart", "Price is null for item: " + cartModel.getName());
+            }
         }
         return totalAmount;
     }
@@ -101,11 +115,8 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
             return;
         }
 
-        // Convert totalAmount to an integer (assuming totalAmount is in dong)
-        int amountInDong = (int) totalAmount;
-
-        PaymentRequest paymentRequest = new PaymentRequest(amountInDong); // Update to include the correct field
-        Log.d("PaymentRequest", "Requesting payment link with amount: " + amountInDong);
+        PaymentRequest paymentRequest = new PaymentRequest(totalAmount);
+        Log.d("PaymentRequest", "Requesting payment link with amount: " + totalAmount);
 
         apiService.createPaymentLink("Bearer " + authToken, paymentRequest).enqueue(new Callback<PaymentResponse>() {
             @Override
@@ -115,15 +126,7 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(paymentLink));
                     startActivity(browserIntent);
                 } else {
-                    // Handle error response
-                    Log.e("PaymentError", "Error code: " + response.code() + ", message: " + response.message());
-                    try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "No error body";
-                        Log.e("PaymentError", "Error body: " + errorBody);
-                    } catch (Exception e) {
-                        Log.e("PaymentError", "Failed to read error body", e);
-                    }
-                    Toast.makeText(ShoppingCartActivity.this, "Failed to create payment link.", Toast.LENGTH_SHORT).show();
+                    handleErrorResponse(response);
                 }
             }
 

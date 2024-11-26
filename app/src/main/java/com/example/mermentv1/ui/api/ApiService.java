@@ -1,13 +1,18 @@
 package com.example.mermentv1.ui.api;
 
+import com.example.mermentv1.model.ProductOrder;
 import com.example.mermentv1.model.PaymentRequest;
 import com.example.mermentv1.model.PaymentResponse;
+import com.example.mermentv1.model.ProductOrderResponse;
 import com.example.mermentv1.model.ProductResponse;
 import com.example.mermentv1.model.SigninRequest;
 import com.example.mermentv1.model.SigninResponse;
 import com.example.mermentv1.model.SignupRequest;
 import com.example.mermentv1.model.SignupResponse;
+import com.example.mermentv1.model.TransactionResponse;
 import com.example.mermentv1.model.UserResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,6 +20,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -50,4 +57,33 @@ public interface ApiService {
             @Header("Authorization") String authToken,
             @Body PaymentRequest paymentRequest
     );
+
+    @PUT("User/{id}")
+    Call<Void> updateUserInfo(
+            @Header("Authorization") String token,
+            @Path("id") int userId,
+            @Body UserResponse.UserData updatedData
+    );
+
+
+    @GET("Transaction/transactions-user")
+    Call<TransactionResponse> getUserTransactions(
+            @Header("Authorization") String token,
+            @Query("walletTypeEnums") String walletType,
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    @GET("ProductOrder/user/{userId}")
+    Call<List<ProductOrder>> getUserOrders(
+            @Header("Authorization") String token,
+            @Query("userID") int userID);
+
+    @GET("ProductOrder/user/{userId}")
+    Call<List<ProductOrder>> getProductOrdersByUserId(@Path("userId") int userId);
+
+    @GET("ProductOrder/user/{user_id}")
+    Call<List<ProductOrder>> getProductOrdersByUser(@Path("user_id") int userId);
+
+
 }

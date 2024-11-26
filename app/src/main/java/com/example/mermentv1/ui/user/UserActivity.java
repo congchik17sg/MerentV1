@@ -3,7 +3,6 @@ package com.example.mermentv1.ui.user;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,7 +16,6 @@ import com.example.mermentv1.R;
 import com.example.mermentv1.ui.api.ApiService;
 import com.example.mermentv1.model.UserResponse;
 import com.example.mermentv1.ui.api.ApiClient;
-import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +24,7 @@ import retrofit2.Response;
 public class UserActivity extends AppCompatActivity {
 
     private TextView textView;
+    private int userId; // Store fetched user ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +49,14 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void fetchCurrentUser() {
-        // Retrieve the token from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String token = sharedPreferences.getString("token", null);
 
         if (token == null) {
             textView.setText("No token found. Please log in again.");
-            return; // Exit the method if no token is found
+            return;
         }
 
-        // Pass the context to getClient()
         ApiService apiService = ApiClient.getClient(this).create(ApiService.class);
         Call<UserResponse> call = apiService.getUserDetails("Bearer " + token);
         call.enqueue(new Callback<UserResponse>() {
@@ -69,7 +66,9 @@ public class UserActivity extends AppCompatActivity {
                     UserResponse userResponse = response.body();
                     if (userResponse.isSuccess()) {
                         String name = userResponse.getData().getName();
-                        textView.setText(name); // Display user's name
+                        userId = userResponse.getData().getId();
+                        saveUserIdToPreferences(userId); // Save userId
+                        textView.setText(name);
                     } else {
                         textView.setText("Error: " + userResponse.getMessage());
                     }
@@ -85,15 +84,30 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
+    private void saveUserIdToPreferences(int userId) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("user_id", userId);
+        editor.apply();
+    }
+
     private void setupNavigation() {
         LinearLayout thanhToanLayout = findViewById(R.id.thanh_toan_layout);
         thanhToanLayout.setOnClickListener(v -> navigateToActivity(ContactActivity.class));
 
-        LinearLayout diaChiLayout = findViewById(R.id.dia_chi_layout);
-        diaChiLayout.setOnClickListener(v -> navigateToActivity(AddressActivity.class));
+        LinearLayout diaChiLayout = findViewById(R.id.userinfo_layout);
+        diaChiLayout.setOnClickListener(v -> navigateToActivity(UserInfoActivity.class));
 
         LinearLayout caiDatLayout = findViewById(R.id.cai_dat_layout);
-        caiDatLayout.setOnClickListener(v -> navigateToActivity(SettingActivity.class));
+        caiDatLayout.setOnClickListener(v -> {
+            if (userId != 0) {
+                Intent intent = new Intent(UserActivity.this, TOandPOActivity.class);
+                intent.putExtra("user_id", userId);
+                startActivity(intent);
+            } else {
+                textView.setText("User ID not available. Please wait.");
+            }
+        });
     }
 
     private void navigateToActivity(Class<?> targetActivity) {

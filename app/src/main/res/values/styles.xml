@@ -13,6 +13,19 @@
     <style name="FullScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
+    <style name="Theme.MermentV1.FullScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <!-- Launch Theme for SplashActivity -->
+    <style name="Theme.MermentV1.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/mainsplash</item>
+    </style>
+    <style name="CustomButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_merent_corner_10</item>
+        <item name="android:stateListAnimator">@null</item> <!-- Removes elevation animation -->
+        <item name="android:elevation">0dp</item> <!-- Removes shadow -->
+    </style>
 
 
 

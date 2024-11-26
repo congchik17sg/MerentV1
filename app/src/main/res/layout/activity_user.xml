@@ -18,7 +18,8 @@
         android:paddingVertical="150sp"
         android:text="null"
         android:textColor="@color/white"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:fontFamily="@font/mplus1regular"/>
 
     <!-- Category Container -->
     <LinearLayout
@@ -62,7 +63,7 @@
 
         <!-- Second Option (Địa Chỉ) -->
         <LinearLayout
-            android:id="@+id/dia_chi_layout"
+            android:id="@+id/userinfo_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -75,7 +76,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/mplus1regular"
                 android:gravity="left"
-                android:text="Địa Chỉ"
+                android:text="Thông Tin Người Dùng"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -107,7 +108,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/mplus1regular"
                 android:gravity="left"
-                android:text="Cài Đặt"
+                android:text="Lịch sử giao dịch và thanh toán"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 

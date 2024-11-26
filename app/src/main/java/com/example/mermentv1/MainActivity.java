@@ -38,6 +38,7 @@ import com.example.mermentv1.ui.user.SearchActivity;
 import com.example.mermentv1.ui.user.CameraRecorderActivity;
 import com.example.mermentv1.ui.user.GimbalActivity;
 import com.example.mermentv1.ui.user.LightActivity;
+import com.example.mermentv1.ui.user.ShoppingCartActivity;
 import com.example.mermentv1.ui.user.UserActivity;
 
 import java.io.IOException;

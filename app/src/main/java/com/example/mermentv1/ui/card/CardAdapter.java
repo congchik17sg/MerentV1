@@ -109,4 +109,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             cardView = itemView.findViewById(R.id.card_view);
         }
     }
+
+
 }

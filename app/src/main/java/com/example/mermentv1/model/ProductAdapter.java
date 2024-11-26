@@ -13,11 +13,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mermentv1.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private List<Product> productList;
     private Context context;
+    private OnItemClickListener onItemClickListener;
+
+    // Interface for item clicks
+    public interface OnItemClickListener {
+        void onItemClick(Product product);
+    }
+
+    // Setter for the listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
 
     public ProductAdapter(List<Product> productList, Context context) {
         this.productList = productList;
@@ -35,8 +48,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.nameTextView.setText(product.getName());
-        holder.priceTextView.setText(String.valueOf(product.getPrice())); // Assuming price is an int
-        Glide.with(context).load(product.getUrlCenter()).into(holder.imageView); // Load image
+
+        // Format price with commas and append "VND"
+        String formattedPrice = formatPriceWithVND(product.getPrice());
+        holder.priceTextView.setText(formattedPrice);
+
+        // Load product image using Glide
+        Glide.with(context).load(product.getUrlCenter()).into(holder.imageView);
+
+        // Handle item clicks
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(product);
+            }
+        });
     }
 
     @Override
@@ -55,5 +80,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             priceTextView = itemView.findViewById(R.id.productPrice);
             imageView = itemView.findViewById(R.id.productImage);
         }
+    }
+
+    // Helper method to format the price with "VND" and commas
+    private String formatPriceWithVND(double price) {
+        // Format the price with commas for thousands
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
+        String formattedPrice = numberFormat.format(price);
+        return formattedPrice + " VND";
     }
 }

@@ -53,7 +53,7 @@ public class AccessoriesActivity extends AppCompatActivity {
     }
 
     private void fetchProducts() {
-        Call<ProductResponse> call = apiService.getProductsByCategory("camera");  // Fetch products by category
+        Call<ProductResponse> call = apiService.getProductsByCategory("accessories");  // Fetch products by category
         call.enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
@@ -83,10 +83,10 @@ public class AccessoriesActivity extends AppCompatActivity {
 
             // Filter products where productType equals "camera"
             for (Product product : products) {
-                if ("gimbal".equalsIgnoreCase(product.getProductType())) {
+                if ("accessories".equalsIgnoreCase(product.getProductType())) {
                     cardList.add(new CardModel(
                             product.getName(),
-                            product.getPrice() +"vnd"  ,
+                            product.getPrice() +"VND"  ,
                             product.getDescription(),
                             product.getUrlCenter(),  // Main image URL
                             product.getUrlLeft(),    // Left image URL
