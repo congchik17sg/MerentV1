@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/merent_color"
                 app:fabAlignmentMode="center"
                 app:fabCradleMargin="10dp"
                 app:fabCradleRoundedCornerRadius="30dp">

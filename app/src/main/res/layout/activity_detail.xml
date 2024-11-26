@@ -122,16 +122,16 @@
             android:layout_weight="1"
             android:gravity="start"
             android:text="Price"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/btn_add_to_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/white"
+            android:backgroundTint="@color/merent_color"
             android:text="Thêm vào giỏ"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>

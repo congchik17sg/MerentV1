@@ -1,11 +1,7 @@
 package com.example.mermentv1.ui.user;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,50 +9,80 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.mermentv1.R;
-import com.example.mermentv1.model.ComboItem;
-import com.example.mermentv1.model.ComboProductAdapter;
-import com.example.mermentv1.model.ProductAdapter;
+import com.example.mermentv1.cart.CartManager;
+import com.example.mermentv1.cart.CartModel;
 import com.example.mermentv1.model.ProductItem;
-import com.example.mermentv1.ui.api.ApiClient;
-import com.example.mermentv1.ui.api.ApiService;
+import com.example.mermentv1.model.ProductAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class DetailComboActivity extends AppCompatActivity {
 
-    private TextView comboName, comboDescription;
-    private ImageView comboImage;
+    private RecyclerView productsRecyclerView;
+    private ProductAdapter productAdapter;
+    private List<ProductItem> productList = new ArrayList<>();
+    private TextView comboNameTextView;
+    private Button addToCartButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_combo);
 
-        // Initialize the views
-        comboName = findViewById(R.id.comboName);
-        comboDescription = findViewById(R.id.comboDescription);
-        comboImage = findViewById(R.id.comboImage);
+        // Initialize RecyclerView and Adapter
+        productsRecyclerView = findViewById(R.id.productsRecyclerView);
+        productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Retrieve the combo ID passed from ComboActivity
-        Intent intent = getIntent();
-        int comboId = intent.getIntExtra("comboId", -1);
+        // Initialize the TextView for combo name (optional)
+        comboNameTextView = findViewById(R.id.comboNameTextView);
+        addToCartButton = findViewById(R.id.btn_add_to_cart);
 
-        // Use the combo ID to fetch data or display details
-        if (comboId != -1) {
-            // Fetch combo details using the comboId (you can either fetch from the API or use static data)
-            // For simplicity, assuming you fetch combo details from the API
+        // Get the passed data from the intent
+        int comboId = getIntent().getIntExtra("comboId", -1);
+        List<ProductItem> comboProducts = (List<ProductItem>) getIntent().getSerializableExtra("comboProducts");
 
-            // Example of displaying static data based on comboId (you can replace with actual fetch logic)
-            comboName.setText("Combo Name: Combo " + comboId);  // This should be replaced with actual combo data
-            comboDescription.setText("Description of Combo " + comboId);
-            Glide.with(this).load("https://example.com/combo_image.jpg").into(comboImage);
+        if (comboId != -1 && comboProducts != null) {
+            // Optionally set the combo name if it's passed
+            comboNameTextView.setText("Combo: " + comboId);  // You can modify this to show the actual name
+
+            // Use the passed products list to update the RecyclerView
+            productList.clear();
+            productList.addAll(comboProducts);
+            productAdapter = new ProductAdapter(productList, this);
+            productsRecyclerView.setAdapter(productAdapter);
+
+            // Set add to cart button click listener
+            addToCartButton.setOnClickListener(v -> {
+                // Add the products to cart
+                addProductsToCart(comboProducts);
+            });
+
+        } else {
+            Toast.makeText(this, "Failed to load products", Toast.LENGTH_SHORT).show();
         }
     }
+
+    // Add products to the cart
+    private void addProductsToCart(List<ProductItem> comboProducts) {
+        for (ProductItem product : comboProducts) {
+            // Add each product to the cart using CartModel
+            String imageUrl = product.getUrlCenter();  // Choose the image URL (e.g., urlCenter)
+            String price = product.getPrice() + " VND";  // Append " VND" to the price
+
+            CartModel cartModel = new CartModel(
+                    product.getName(),         // Product name
+                    imageUrl,                  // Product image URL (String)
+                    1,                         // Default quantity is 1
+                    price                      // Product price as String
+            );
+
+            // Add CartModel to cart (CartManager or CartData)
+            CartManager.getInstance().addItem(cartModel);
+        }
+
+        Toast.makeText(this, "Products added to cart!", Toast.LENGTH_SHORT).show();
+    }
+
 }

@@ -156,7 +156,21 @@ public class ShoppingCartActivity extends AppCompatActivity implements CartAdapt
             cartList.remove(cartModel);
             cartAdapter.notifyDataSetChanged(); // Notify adapter about the change
             Toast.makeText(this, "Product removed from cart.", Toast.LENGTH_SHORT).show();
+        } else {
+            // Update the quantity if the new value is valid
+            cartModel.setQuantity(newQuantity);
+            cartAdapter.notifyDataSetChanged();
         }
-        updateTotalAmount(); // Update the total amount regardless of quantity change
+
+        // Update the total amount whenever the quantity changes
+        updateTotalAmount();
+    }
+
+    @Override
+    public void onItemRemoved(CartModel cartModel) {
+        cartList.remove(cartModel);
+        cartAdapter.notifyDataSetChanged(); // Notify the adapter about the removal
+        Toast.makeText(this, "Product removed from cart.", Toast.LENGTH_SHORT).show();
+        updateTotalAmount(); // Update total after removal
     }
 }

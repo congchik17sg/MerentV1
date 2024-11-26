@@ -16,6 +16,7 @@ import com.example.mermentv1.R;
 import com.example.mermentv1.model.ComboItem;
 import com.example.mermentv1.ui.user.DetailComboActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComboAdapter extends RecyclerView.Adapter<ComboAdapter.ComboViewHolder> {
@@ -50,9 +51,10 @@ public class ComboAdapter extends RecyclerView.Adapter<ComboAdapter.ComboViewHol
 
         // Set click listener for the combo item
         holder.itemView.setOnClickListener(v -> {
-            // Navigate to DetailComboActivity when combo item is clicked
+            // Passing ComboItem (or ComboID) to DetailComboActivity
             Intent intent = new Intent(context, DetailComboActivity.class);
-            intent.putExtra("comboId", comboItem.getComboID());  // Passing the combo ID or whole ComboItem as extra
+            intent.putExtra("comboId", comboItem.getComboID());  // Passing the combo ID
+            intent.putExtra("comboProducts", new ArrayList<>(comboItem.getProducts())); // Pass the products list
             context.startActivity(intent);
         });
     }

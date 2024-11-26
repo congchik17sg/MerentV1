@@ -41,7 +41,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         holder.productName.setText(cartModel.getName());
         holder.productQuantity.setText(String.valueOf(cartModel.getQuantity()));
-        holder.productPrice.setText(cartModel.getPrice());
+        holder.productPrice.setText(cartModel.getPrice());  // Append " VND" to the price
 
         Glide.with(context)
                 .load(cartModel.getImageUrl())
@@ -69,6 +69,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         });
     }
 
+
     @Override
     public int getItemCount() {
         return cartList.size();
@@ -91,6 +92,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
     public interface OnQuantityChangeListener {
         void onQuantityChanged(CartModel cartModel, int newQuantity);
+        void onItemRemoved(CartModel cartModel);
+
     }
 
 }

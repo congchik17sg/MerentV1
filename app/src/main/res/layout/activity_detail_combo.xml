@@ -5,25 +5,26 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/comboImage"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop" />
-
     <TextView
-        android:id="@+id/comboName"
+        android:id="@+id/comboNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Combo Name"
         android:textSize="20sp"
-        android:paddingTop="16dp" />
+        android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:id="@+id/comboDescription"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/productsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" /> <!-- Ensures RecyclerView takes up the available space -->
+
+    <Button
+        android:id="@+id/btn_add_to_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Combo Description"
-        android:textSize="16sp"
-        android:paddingTop="8dp" />
+        android:text="Add to Cart"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
 </LinearLayout>

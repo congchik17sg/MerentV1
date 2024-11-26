@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mermentv1.R;
-import com.example.mermentv1.model.ComboProductAdapter;
 import com.example.mermentv1.model.ProductItem;
 
 import java.util.List;
@@ -38,18 +37,14 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductItem product = productList.get(position);
-
-        // Set product name
         holder.productName.setText(product.getName());
+        holder.productDescription.setText(product.getDescription());
 
-        // Set product price (assuming there's a getPrice method)
-        holder.productPrice.setText("$" + product.getPrice());
+        // Optionally bind other fields like product image or price
+        holder.productPrice.setText(String.valueOf(product.getPrice()));
 
-        // Load product image using Glide
-//        Glide.with(context)
-//                .load(product.getImageUrl())
-//                .placeholder(R.drawable.placeholder_image) // Placeholder image
-//                .into(holder.productImage);
+        // Example for image loading
+        Glide.with(context).load(product.getUrlCenter()).into(holder.productImage);
     }
 
     @Override
@@ -59,12 +54,13 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Vi
 
     // ViewHolder class
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView productName, productPrice;
+        TextView productName, productDescription, productPrice;
         ImageView productImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.productName);
+            productDescription = itemView.findViewById(R.id.productDescription);
             productPrice = itemView.findViewById(R.id.productPrice);
             productImage = itemView.findViewById(R.id.productImage);
         }
